@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Application Structure Plan: 
-        A SPA com navegação no cabeçalho para seções temáticas: Início (visão geral, missão, visão, logo), Sobre Nós (objetivos, estrutura, normas), Serviços (ofertas, público-alvo, ✨ Gerador de Ideias IA), Diferenciais (por que escolher a Codify, ✨ Argumentos de Venda IA), e Apoie (próximos passos, pedido de apoio). 
+        A SPA com navegação no cabeçalho para seções temáticas: Início (visão geral, missão, visão, logo), Sobre Nós (objetivos, estrutura, normas), Serviços (ofertas, público-alvo, ✨ Gerador de Ideias IA), Diferenciais (por que escolher a Codify, ✨ Argumentos de Venda IA), Apoie (próximos passos, pedido de apoio) e CheckList (link externo). 
         Esta estrutura organiza o conteúdo de forma lógica, facilitando a exploração progressiva e a compreensão da proposta da Codify.
         As interações incluem navegação suave, botões para acionar a Gemini API para geração de conteúdo dinâmico.
     -->
@@ -20,6 +20,7 @@
         - Report Info: Serviços (Slide 6), Público-Alvo (Slide 7) + ✨ Gemini API -> Goal: Clarificar ofertas e inspirar com ideias de projetos -> Method: Seção 'Serviços' com cards, input para setor e botão para gerar ideias de projetos. Área para exibir resultados da IA. -> Interaction: Input de texto, clique em botão, leitura de resultados dinâmicos. -> Justification: Apresentar capacidades e demonstrar inovação com IA. -> Library: Tailwind, JS, Gemini API.
         - Report Info: Diferenciais (Slide 8) + ✨ Gemini API -> Goal: Persuadir sobre o valor da Codify com reforço da IA -> Method: Seção 'Diferenciais' com lista e botão para gerar argumentos de venda. Área para exibir resultado da IA. -> Interaction: Clique em botão, leitura de resultado dinâmico. -> Justification: Realçar pontos fortes com validação criativa da IA. -> Library: Tailwind, JS, Gemini API.
         - Report Info: Próximos Passos/Pedido (Slide 11) -> Goal: Engajar e solicitar apoio -> Method: Seção 'Apoie' com texto claro. -> Interaction: Leitura. -> Justification: Concluir com necessidades. -> Library: Tailwind.
+        - Report Info: Link para CheckList.html -> Goal: Fornecer acesso a um recurso externo -> Method: Novo item de menu "CheckList" -> Interaction: Clique para navegar para CheckList.html. -> Justification: Adicionar recurso complementar. -> Library: HTML.
         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
     -->
     <style>
@@ -87,6 +88,7 @@
                         <a href="#servicos" class="nav-link" data-section="servicos">Serviços</a>
                         <a href="#diferenciais" class="nav-link" data-section="diferenciais">Diferenciais</a>
                         <a href="#apoie" class="nav-link" data-section="apoie">Apoie esta Ideia</a>
+                        <a href="CheckList.html" class="nav-link" target="_blank">CheckList</a>
                     </div>
                 </div>
                 <div class="md:hidden">
@@ -104,6 +106,7 @@
             <a href="#servicos" class="block nav-link text-center border-t border-slate-200" data-section="servicos">Serviços</a>
             <a href="#diferenciais" class="block nav-link text-center border-t border-slate-200" data-section="diferenciais">Diferenciais</a>
             <a href="#apoie" class="block nav-link text-center border-t border-slate-200" data-section="apoie">Apoie esta Ideia</a>
+            <a href="CheckList.html" class="block nav-link text-center border-t border-slate-200" target="_blank">CheckList</a>
         </div>
     </header>
 
@@ -337,12 +340,20 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-        const mobileNavLinks = mobileMenu.querySelectorAll('a');
+        const mobileNavLinks = mobileMenu.querySelectorAll('a[data-section]'); // Seleciona apenas links de seção
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
             });
         });
+        // Adiciona listener para o link do Checklist no menu mobile, se existir
+        const mobileCheckListLink = mobileMenu.querySelector('a[href="CheckList.html"]');
+        if (mobileCheckListLink) {
+            mobileCheckListLink.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        }
+
 
         const navLinks = document.querySelectorAll('nav a[data-section]');
         const sections = document.querySelectorAll('section');
@@ -350,10 +361,18 @@
         function changeNavHighlight() {
             let index = sections.length;
             while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
-            navLinks.forEach((link) => link.classList.remove('active'));
-            const activeLink = document.querySelector(`nav a[data-section="${sections[index].id}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
+            
+            navLinks.forEach((link) => {
+                if (link.getAttribute('data-section')) { // Só remove 'active' de links de seção
+                    link.classList.remove('active');
+                }
+            });
+
+            if (sections[index]) { // Verifica se a seção existe
+                 const activeLink = document.querySelector(`nav a[data-section="${sections[index].id}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
             }
         }
         window.addEventListener('scroll', changeNavHighlight);
