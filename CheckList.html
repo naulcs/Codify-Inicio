@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist para Criação do Estatuto da Empresa Júnior</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .task-item input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #6b7280; /* gray-500 */
+        }
+        .task-item input[type="checkbox"]:checked + label .task-text::before {
+            content: '✔ ';
+            color: #10b981; /* emerald-500 */
+        }
+        .progress-bar-bg {
+            background-color: #374151; /* gray-700 */
+        }
+        .progress-bar-fill {
+            background-color: #3b82f6; /* blue-500 */
+            transition: width 0.3s ease-in-out;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937; /* gray-800 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563; /* gray-600 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* gray-500 */
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #1f2937; /* gray-800 */
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #374151; /* gray-700 */
+            width: 80%;
+            max-width: 700px;
+            border-radius: 0.75rem; /* rounded-xl */
+            color: #d1d5db; /* gray-300 */
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .close-button {
+            color: #9ca3af; /* gray-400 */
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #e5e7eb; /* gray-200 */
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #geminiResponseArea {
+            white-space: pre-wrap; /* Preserve line breaks */
+            background-color: #111827; /* gray-900 */
+            padding: 15px;
+            border-radius: 0.5rem; /* rounded-lg */
+            max-height: 60vh;
+            overflow-y: auto;
+            border: 1px solid #374151; /* gray-700 */
+            margin-top: 15px;
+            font-family: monospace;
+            line-height: 1.6;
+        }
+        .gemini-button {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+            padding: 6px 10px;
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 0.8rem;
+            margin-left: 8px;
+            transition: background-color 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .gemini-button:hover {
+            background-color: #1d4ed8; /* blue-700 */
+        }
+        .gemini-button:disabled {
+            background-color: #4b5563; /* gray-600 */
+            cursor: not-allowed;
+        }
+        .loading-spinner {
+            border: 2px solid #4b5563; /* gray-600 */
+            border-top: 2px solid #60a5fa; /* blue-400 */
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 text-gray-100 min-h-screen p-4 sm:p-8">
+    <div class="container mx-auto max-w-3xl bg-slate-800 shadow-2xl rounded-xl p-6 sm:p-10">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl sm:text-4xl font-bold text-sky-400 mb-2">Checklist para Criação do Estatuto da EJ</h1>
+            <p class="text-slate-400 text-sm sm:text-base">Guia interativo para fundar sua Empresa Júnior de Análise e Desenvolvimento de Sistemas no IFBA.</p>
+        </header>
+
+        <div id="checklistApp">
+            </div>
+    </div>
+
+    <div id="geminiModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle" class="text-xl font-semibold text-sky-400 mb-3">Assistente AI</h3>
+            <div id="geminiResponseArea">Aguarde enquanto o assistente trabalha...</div>
+            <button onclick="copyToClipboard()" class="mt-4 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-150">
+                Copiar Texto
+            </button>
+            <div id="copyMessage" class="text-sm text-emerald-400 mt-2" style="display: none;">Texto copiado!</div>
+        </div>
+    </div>
+
+    <script>
+        // Estrutura de dados para o checklist
+        const checklistData = [
+            {
+                title: "Etapa 1: Passos Iniciais (Antes de Escrever o Estatuto)",
+                id: "etapa1",
+                tasks: [
+                    // ... (conteúdo da Etapa 1 permanece o mesmo) ...
+                    { 
+                        id: "e1t1", text: "Formação da Equipe", 
+                        subtasks: [
+                            { id: "e1t1s1", text: "Reunir grupo de alunos interessados e motivados (ADS)." },
+                            { id: "e1t1s2", text: "Definir equipe inicial (aprox. 6 pessoas)." },
+                            { id: "e1t1s3", text: "Divulgar ideia entre colegas para encontrar interessados." }
+                        ]
+                    },
+                    { 
+                        id: "e1t2", text: "Busca por um Professor Orientador",
+                        subtasks: [
+                            { id: "e1t2s1", text: "Identificar e convidar um professor do curso para ser orientador." },
+                            { id: "e1t2s2", text: "Formalizar o aceite do professor orientador." }
+                        ]
+                    },
+                    { 
+                        id: "e1t3", text: "Relacionamento com a Instituição (IFBA)",
+                        subtasks: [
+                            { id: "e1t3s1", text: "Buscar apoio da Reitoria, direção do campus, chefia de departamento e coordenação." },
+                            { id: "e1t3s2", text: "Elaborar e apresentar plano de negócios/proposta da EJ para a instituição." },
+                            { id: "e1t3s3", text: "Solicitar formalmente um espaço físico no campus." },
+                            { id: "e1t3s4", text: "Firmar Contrato de Comodato (caso o espaço seja cedido)." }
+                        ]
+                    },
+                    { 
+                        id: "e1t4", text: "Estudo e Planejamento (Benchmarking)",
+                        subtasks: [
+                            { id: "e1t4s1", text: "Definir claramente os objetivos da Empresa Júnior." },
+                            { id: "e1t4s2", text: "Analisar estatutos de outras EJs." },
+                            { id: "e1t4s3", text: "Pesquisar e contatar outras EJs, especialmente na área de tecnologia." }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Etapa 2: Estrutura Essencial do Estatuto (Redação)",
+                id: "etapa2",
+                tasks: [
+                    { 
+                        id: "e2t1", text: "Capítulo I - Da Denominação, Sede, Finalidade e Duração", 
+                        subtasks: [
+                            { id: "e2t1s1", text: "Definir Razão Social e Nome Fantasia (evitar usar 'IFBA' na razão social)." }, // Botão aqui
+                            { id: "e2t1s2", text: "Indicar Sede (preferencialmente no campus IFBA)." },
+                            { id: "e2t1s3", text: "Listar Finalidades (aplicação prática ADS, empreendedorismo, etc.)." },
+                            { id: "e2t1s4", text: "Definir Duração como indeterminada." }
+                        ]
+                    },
+                    { 
+                        id: "e2t2", text: "Capítulo II - Do Quadro Social, Direitos e Deveres",
+                        subtasks: [
+                            { id: "e2t2s1", text: "Definir categorias de Membros (Efetivos, Honorários, etc.)." },
+                            { id: "e2t2s2", text: "Garantir que Membros Efetivos sejam alunos de ADS do IFBA." },
+                            { id: "e2t2s3", text: "Especificar Direitos e Deveres de cada categoria." },
+                            { id: "e2t2s4", text: "Estabelecer regras claras para Admissão e Desligamento de membros." }
+                        ]
+                    },
+                    {
+                        id: "e2t3", text: "Capítulo III - Da Estrutura Administrativa",
+                        subtasks: [
+                            { id: "e2t3s1", text: "Definir Órgãos (Assembleia Geral, Diretoria Executiva, Conselho Fiscal)." },
+                            { id: "e2t3s2", text: "Detalhar competências da Assembleia Geral, convocação e quórum." },
+                            { id: "e2t3s3", text: "Definir cargos e competências da Diretoria Executiva." },
+                            { id: "e2t3s4", text: "Definir composição e atribuições do Conselho Fiscal." }
+                        ]
+                    },
+                    {
+                        id: "e2t4", text: "Capítulo IV - Do Patrimônio e Regime Financeiro",
+                        subtasks: [
+                            { id: "e2t4s1", text: "Descrever como será constituído o Patrimônio da EJ." },
+                            { id: "e2t4s2", text: "Declarar a natureza de associação civil sem fins econômicos." },
+                            { id: "e2t4s3", text: "Especificar que todo resultado financeiro será reinvestido na EJ." },
+                            { id: "e2t4s4", text: "Vedar remuneração ou distribuição de lucros a diretores e membros." }
+                        ]
+                    },
+                     {
+                        id: "e2t5", text: "Capítulo V - Das Atividades",
+                        subtasks: [
+                            { id: "e2t5s1", text: "Garantir que os serviços sejam compatíveis com o curso de ADS." },
+                            { id: "e2t5s2", text: "Estabelecer que as atividades terão orientação e supervisão de professores." }
+                        ]
+                    },
+                    {
+                        id: "e2t6", text: "Capítulo VI - Das Eleições",
+                        subtasks: [
+                            { id: "e2t6s1", text: "Descrever detalhadamente o processo eleitoral para Diretoria e Conselhos." },
+                            { id: "e2t6s2", text: "Incluir detalhes sobre convocação, registro de chapas, votação e apuração." }
+                        ]
+                    },
+                    {
+                        id: "e2t7", text: "Capítulo VII - Das Disposições Finais e Transitórias",
+                        subtasks: [
+                            { id: "e2t7s1", text: "Definir o processo para Reforma do Estatuto." },
+                            { id: "e2t7s2", text: "Determinar como Casos Omissos no estatuto serão resolvidos." },
+                            { id: "e2t7s3", text: "Incluir cláusula de não responsabilidade subsidiária dos membros." },
+                            { id: "e2t7s4", text: "Definir condições para Extinção da EJ e o destino do seu patrimônio (revertido ao IFBA)." }
+                        ]
+                    },
+                    { id: "e2t8", text: "Revisão final do Estatuto com o grupo e professor orientador." }
+                ]
+            },
+            {
+                title: "Etapa 3: Próximos Passos (Após a Elaboração do Estatuto)",
+                id: "etapa3",
+                tasks: [
+                    // ... (conteúdo da Etapa 3 permanece o mesmo) ...
+                     { 
+                        id: "e3t1", text: "Assembleia de Fundação",
+                        subtasks: [
+                            { id: "e3t1s1", text: "Convocar Assembleia Geral com todos os interessados." },
+                            { id: "e3t1s2", text: "Apresentar, discutir e aprovar a versão final do estatuto na assembleia." },
+                            { id: "e3t1s3", text: "Realizar a eleição e posse da primeira Diretoria Executiva." },
+                            { id: "e3t1s4", text: "Registrar todos os atos em Ata de Fundação." },
+                            { id: "e3t1s5", text: "Obter assinatura de um advogado na Ata de Fundação." }
+                        ]
+                    },
+                    { 
+                        id: "e3t2", text: "Registro em Cartório",
+                        subtasks: [
+                            { id: "e3t2s1", text: "Registrar o estatuto e a ata de fundação no Cartório de Registro Civil de Pessoas Jurídicas." },
+                            { id: "e3t2s2", text: "Garantir que um advogado assine os documentos para registro." }
+                        ]
+                    },
+                    { 
+                        id: "e3t3", text: "Obtenção do CNPJ",
+                        subtasks: [
+                            { id: "e3t3s1", text: "Cadastrar a Empresa Júnior na Receita Federal." },
+                            { id: "e3t3s2", text: "Obter o Cadastro Nacional de Pessoa Jurídica (CNPJ)." }
+                        ]
+                    },
+                    { 
+                        id: "e3t4", text: "Alvará de Funcionamento",
+                        subtasks: [
+                            { id: "e3t4s1", text: "Solicitar o alvará de funcionamento na prefeitura de Salvador." }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const STORAGE_KEY_PREFIX = 'ejChecklist_';
+        const geminiModal = document.getElementById('geminiModal');
+        const geminiResponseArea = document.getElementById('geminiResponseArea');
+        const modalTitle = document.getElementById('modalTitle');
+
+        function getStorageKey(taskId) {
+            return `${STORAGE_KEY_PREFIX}${taskId}`;
+        }
+
+        function updateProgressBar(sectionId) {
+            const sectionElement = document.getElementById(sectionId);
+            if (!sectionElement) return;
+
+            const checkboxes = sectionElement.querySelectorAll('input[type="checkbox"]');
+            const checkedCheckboxes = sectionElement.querySelectorAll('input[type="checkbox"]:checked');
+            const progressBarFill = sectionElement.querySelector('.progress-bar-fill');
+            
+            if (checkboxes.length === 0 || !progressBarFill) return;
+
+            const progress = (checkedCheckboxes.length / checkboxes.length) * 100;
+            progressBarFill.style.width = `${progress}%`;
+            progressBarFill.textContent = `${Math.round(progress)}%`;
+        }
+
+        function handleCheckboxChange(event, sectionId) {
+            localStorage.setItem(getStorageKey(event.target.id), event.target.checked);
+            updateProgressBar(sectionId);
+        }
+
+        function openModal(title) {
+            modalTitle.textContent = title;
+            geminiResponseArea.innerHTML = '<div class="flex justify-center items-center h-full"><div class="loading-spinner" style="width: 30px; height: 30px; border-width: 3px;"></div> <span class="ml-3">Aguarde, o assistente está a pensar...</span></div>';
+            geminiModal.style.display = "block";
+        }
+
+        function closeModal() {
+            geminiModal.style.display = "none";
+            document.getElementById('copyMessage').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == geminiModal) {
+                closeModal();
+            }
+        }
+
+        function copyToClipboard() {
+            const textToCopy = geminiResponseArea.innerText;
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                document.getElementById('copyMessage').style.display = 'block';
+                setTimeout(() => {
+                     document.getElementById('copyMessage').style.display = 'none';
+                }, 2000);
+            } catch (err) {
+                console.error('Falha ao copiar texto: ', err);
+                geminiResponseArea.innerHTML += "<br><p class='text-red-400'>Falha ao copiar. Por favor, copie manualmente.</p>";
+            }
+            document.body.removeChild(textArea);
+        }
+
+        async function callGeminiToElaborateText(mainTaskText, subtasksDetails) {
+            const buttonId = `gemini-btn-elaborate-${mainTaskText.replace(/\s+/g, '-').toLowerCase().replace(/[^a-z0-9-]/gi, '')}`;
+            const button = document.getElementById(buttonId);
+            const originalButtonText = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = 'Aguarde... <div class="loading-spinner"></div>';
+
+            openModal(`Texto Sugerido para: ${mainTaskText}`);
+
+            let prompt = `Você é um assistente especializado na criação de estatutos para Empresas Juniores no Brasil, especificamente para o IFBA (Instituto Federal da Bahia).
+            Elabore um texto formal e objetivo para a seguinte seção do estatuto de uma Empresa Júnior do curso de Análise e Desenvolvimento de Sistemas:
+            
+            **Seção Principal do Estatuto:** "${mainTaskText}"
+            
+            **Este capítulo/seção deve abordar os seguintes pontos (baseado nas subtarefas do checklist):**\n`;
+            subtasksDetails.forEach(subtask => {
+                prompt += `- ${subtask.text}\n`;
+            });
+            prompt += `\nConsidere que a Empresa Júnior está vinculada ao curso de Análise e Desenvolvimento de Sistemas do IFBA.
+            O texto deve ser claro, conciso e seguir as boas práticas para redação de estatutos.
+            Use linguagem formal e apropriada para um documento legal.
+            Estruture o texto em artigos e parágrafos, se aplicável, para cada ponto principal.`;
+
+            // Common API call logic
+            await makeGeminiCall(prompt, button, originalButtonText);
+        }
+        
+        async function callGeminiForNameSuggestions(subtaskUniqueId, subtaskText) {
+            const buttonId = `gemini-btn-names-${subtaskUniqueId}`;
+            const button = document.getElementById(buttonId);
+            const originalButtonText = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = 'Aguarde... <div class="loading-spinner"></div>';
+
+            openModal(`Sugestões de Nomes para a EJ (Baseado em: "${subtaskText}")`);
+            
+            const prompt = `Você é um assistente especializado na criação de Empresas Juniores no Brasil, com foco no contexto do IFBA (Instituto Federal da Bahia).
+Por favor, gere uma lista de 10 a 15 sugestões de nomes para uma nova Empresa Júnior que será formada por estudantes do curso de Análise e Desenvolvimento de Sistemas.
+
+Considerações para os nomes:
+- Devem ser profissionais e memoráveis.
+- Devem, idealmente, refletir a área de tecnologia, inovação, desenvolvimento de software, ou soluções digitais.
+- Podem incorporar o espírito jovem, dinâmico e empreendedor dos estudantes.
+- Devem ser adequados para uma entidade vinculada ao IFBA, mas evite usar a sigla 'IFBA' diretamente no nome principal da EJ (pode ser mencionado como 'EJ de ADS do IFBA' em descrições, mas o nome fantasia deve ser mais original).
+- Apresente os nomes em formato de lista. Para cada nome, adicione uma breve justificação (1-2 frases) do porquê seria uma boa escolha.
+
+Exemplo de formato esperado:
+1.  **NomeSugerido1:** Justificação breve.
+2.  **NomeSugerido2:** Justificação breve.
+...`;
+            // Common API call logic
+            await makeGeminiCall(prompt, button, originalButtonText);
+        }
+
+        async function makeGeminiCall(prompt, buttonElement, originalButtonHTML) {
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Deixar vazio para o Canvas fornecer
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("Erro da API Gemini:", errorData);
+                    throw new Error(`Erro da API: ${response.status} ${response.statusText}. Detalhes: ${JSON.stringify(errorData)}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const generatedText = result.candidates[0].content.parts[0].text;
+                    geminiResponseArea.textContent = generatedText;
+                } else {
+                    console.error("Resposta inesperada da API Gemini:", result);
+                    geminiResponseArea.textContent = "Não foi possível gerar o conteúdo. A resposta da API não continha o formato esperado. Tente novamente.";
+                     if (result.promptFeedback && result.promptFeedback.blockReason) {
+                        geminiResponseArea.textContent += `\nMotivo do bloqueio: ${result.promptFeedback.blockReason}`;
+                        if (result.promptFeedback.safetyRatings) {
+                            geminiResponseArea.textContent += `\nClassificações de segurança: ${JSON.stringify(result.promptFeedback.safetyRatings)}`;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao chamar a API Gemini:', error);
+                geminiResponseArea.textContent = `Ocorreu um erro ao tentar gerar o conteúdo: ${error.message}. Verifique a consola para mais detalhes.`;
+            } finally {
+                if (buttonElement) {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalButtonHTML;
+                }
+            }
+        }
+
+
+        function renderTask(task, sectionId, isSubtask = false, parentTaskId = '') {
+            // Gerar um ID único para a tarefa/subtarefa que possa ser usado em elementos HTML
+            const uniqueHtmlIdPart = (parentTaskId ? `${parentTaskId}_${task.id}` : task.id)
+                                     .replace(/\s+/g, '-') // Substituir espaços por hífens
+                                     .replace(/[^a-zA-Z0-9-_]/g, ''); // Remover caracteres não alfanuméricos exceto - e _
+
+            const checkboxId = `chk-${uniqueHtmlIdPart}`;
+            const isChecked = localStorage.getItem(getStorageKey(checkboxId)) === 'true';
+            
+            let specificGeminiButtonHTML = '';
+
+            // Botão "Elaborar Texto" para tarefas principais da Etapa 2
+            if (sectionId === 'etapa2' && !isSubtask && task.subtasks && task.subtasks.length > 0) {
+                const buttonElaborateId = `gemini-btn-elaborate-${uniqueHtmlIdPart}`;
+                specificGeminiButtonHTML += `<button id="${buttonElaborateId}" class="gemini-button" onclick="callGeminiToElaborateText('${task.text.replace(/'/g, "\\'")}', JSON.parse('${JSON.stringify(task.subtasks).replace(/'/g, "\\'")}'))">✨ Elaborar Texto</button>`;
+            }
+
+            // Botão "Sugerir Nomes" para a subtarefa específica
+            if (task.id === 'e2t1s1') { // ID da subtarefa "Definir Razão Social e Nome Fantasia"
+                const buttonNamesId = `gemini-btn-names-${uniqueHtmlIdPart}`;
+                specificGeminiButtonHTML += `<button id="${buttonNamesId}" class="gemini-button" onclick="callGeminiForNameSuggestions('${uniqueHtmlIdPart}', '${task.text.replace(/'/g, "\\'")}')">✨ Sugerir Nomes</button>`;
+            }
+            
+
+            let taskHTML = `<div class="task-item ${isSubtask ? 'ml-4 sm:ml-6' : 'mt-3'} py-2 px-3 rounded-md bg-slate-700/50 hover:bg-slate-700 transition-colors duration-150 flex justify-between items-center">
+                <div class="flex-grow">
+                    <input type="checkbox" id="${checkboxId}" ${isChecked ? 'checked' : ''} class="mr-2 h-4 w-4 rounded border-gray-500 text-sky-500 focus:ring-sky-500 align-middle">
+                    <label for="${checkboxId}" class="text-slate-300 hover:text-sky-300 cursor-pointer align-middle"><span class="task-text">${task.text}</span></label>
+                </div>
+                <div class="flex-shrink-0">
+                   ${specificGeminiButtonHTML}
+                </div>
+            </div>`;
+
+            if (task.subtasks && task.subtasks.length > 0) {
+                taskHTML += `<div class="mt-1 ml-4 sm:ml-6 border-l-2 border-slate-600 pl-3">`;
+                task.subtasks.forEach(subtask => {
+                    // Passar o ID da tarefa principal (task.id) como originalTaskId para as subtarefas
+                    taskHTML += renderTask(subtask, sectionId, true, uniqueHtmlIdPart, task.id);
+                });
+                taskHTML += '</div>';
+            }
+            return taskHTML;
+        }
+
+        function renderChecklist() {
+            const appDiv = document.getElementById('checklistApp');
+            let contentHTML = '';
+
+            checklistData.forEach(section => {
+                contentHTML += `
+                    <section id="${section.id}" class="mb-10 p-4 sm:p-6 bg-slate-800/70 rounded-lg shadow-lg border border-slate-700">
+                        <h2 class="text-xl sm:text-2xl font-semibold text-sky-400 mb-3">${section.title}</h2>
+                        <div class="progress-bar-bg w-full h-6 rounded-full overflow-hidden mb-4 border border-slate-600">
+                            <div class="progress-bar-fill h-full text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 0%;">0%</div>
+                        </div>
+                        <div class="space-y-1">
+                `;
+                section.tasks.forEach(task => {
+                    contentHTML += renderTask(task, section.id);
+                });
+                contentHTML += `
+                        </div>
+                    </section>
+                `;
+            });
+            appDiv.innerHTML = contentHTML;
+
+            checklistData.forEach(section => {
+                const sectionElement = document.getElementById(section.id);
+                if (sectionElement) {
+                    sectionElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.addEventListener('change', (event) => handleCheckboxChange(event, section.id));
+                    });
+                    updateProgressBar(section.id);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderChecklist);
+    </script>
+</body>
+</html>
