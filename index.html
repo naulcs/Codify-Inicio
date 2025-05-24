@@ -16,12 +16,12 @@
     <!-- Visualization & Content Choices:
         - Report Info: Logo da Codify -> Goal: Apresentar identidade visual -> Method: Tag <img> na seção 'Início' com src para o logo. -> Interaction: Visualização. -> Justification: Reforçar a marca. -> Library: HTML.
         - Report Info: Missão/Visão (Slide 4) -> Goal: Informar identidade central -> Method: Blocos de texto destacados na seção 'Início' -> Interaction: Leitura direta -> Justification: Enfatizar os pilares da EJ -> Library: Tailwind.
-        - Report Info: Objetivos (Slide 5), Estrutura (Slide 9), Normas (Slide 10), Estatuto -> Goal: Detalhar organização e conformidade -> Method: Seção 'Sobre Nós' com subseções claras. Estrutura como diagrama HTML/Tailwind aprimorado. Link para o estatuto. -> Interaction: Navegação para a seção, clique no link. -> Justification: Agrupar informações institucionais. -> Library: Tailwind.
+        - Report Info: Objetivos (Slide 5), Estrutura (Slide 9), Normas (Slide 10), Estatuto -> Goal: Detalhar organização e conformidade -> Method: Seção 'Sobre Nós' com subseções claras, ícones e layout vertical. Estrutura como diagrama HTML/Tailwind aprimorado. Link para o estatuto. -> Interaction: Navegação para a seção, clique no link. -> Justification: Agrupar informações institucionais de forma clara e visual. -> Library: Tailwind, Inline SVGs.
         - Report Info: Serviços (Slide 6), Público-Alvo (Slide 7) -> Goal: Clarificar ofertas -> Method: Seção 'Serviços' com cards. -> Interaction: Leitura. -> Justification: Apresentar capacidades. -> Library: Tailwind.
         - Report Info: Diferenciais (Slide 8) + ✨ Gemini API -> Goal: Persuadir sobre o valor da Codify com reforço da IA -> Method: Seção 'Diferenciais' com lista e botão para gerar argumentos de venda. Área para exibir resultado da IA. -> Interaction: Clique em botão, leitura de resultado dinâmico. -> Justification: Realçar pontos fortes com validação criativa da IA. -> Library: Tailwind, JS, Gemini API.
         - Report Info: Próximos Passos/Pedido (Slide 11) -> Goal: Engajar e solicitar apoio -> Method: Seção 'Apoie' com texto claro. -> Interaction: Leitura. -> Justification: Concluir com necessidades. -> Library: Tailwind.
         - Report Info: Link para CheckList.html -> Goal: Fornecer acesso a um recurso externo -> Method: Novo item de menu "CheckList" -> Interaction: Clique para navegar para CheckList.html. -> Justification: Adicionar recurso complementar. -> Library: HTML.
-        - CONFIRMATION: NO SVG graphics used initially, but added for org chart. NO Mermaid JS used.
+        - CONFIRMATION: Inline SVGs used for org chart and enhanced "Sobre Nós" section. NO Mermaid JS used.
     -->
     <style>
         body {
@@ -50,17 +50,7 @@
         html {
             scroll-behavior: smooth;
         }
-        /* Estilos Antigos da Estrutura Organizacional (serão substituídos/complementados) */
-        .org-chart-node-old { /* Renomeado para evitar conflito se necessário, mas idealmente removido */
-            @apply bg-teal-100 text-teal-800 p-3 rounded-md shadow text-center font-semibold;
-        }
-        .org-chart-level-old { /* Renomeado para evitar conflito se necessário, mas idealmente removido */
-            @apply flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-4 sm:space-y-0 mt-4;
-        }
-        .org-chart-level-old .org-chart-node-old { /* Renomeado */
-            @apply w-full sm:w-1/3;
-        }
-
+        
         .ai-result-container {
             @apply mt-4 p-4 border border-fuchsia-200 rounded-lg bg-fuchsia-50 text-fuchsia-800 shadow;
         }
@@ -71,16 +61,21 @@
             @apply text-red-600 bg-red-100 border border-red-300 p-3 rounded-md text-sm;
         }
 
-        /* Novos estilos para a Estrutura Organizacional */
+        /* Estilos para a Estrutura Organizacional */
         .org-node {
             @apply p-4 rounded-xl shadow-lg text-center font-semibold transition-all duration-300 ease-in-out cursor-default w-full max-w-xs sm:w-auto;
-            /* min-width: 180px; /* Garante uma largura mínima para os nós */
         }
         .president-node {
             @apply bg-teal-600 text-white hover:bg-teal-700 transform hover:scale-105 border-2 border-teal-700;
         }
         .director-node {
             @apply bg-white text-teal-700 border-2 border-teal-200 hover:border-teal-500 hover:shadow-xl transform hover:scale-105;
+        }
+        .objective-item {
+            @apply flex items-start space-x-3;
+        }
+        .objective-icon {
+            @apply h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5;
         }
     </style>
 </head>
@@ -163,18 +158,35 @@
                 A Codify nasce do desejo de transformar o aprendizado em ação, beneficiando alunos, o mercado e o próprio IFBA. Conheça nossos objetivos, como planejamos nossa organização e nosso compromisso com as diretrizes institucionais.
             </p>
 
-            <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div class="space-y-12">
+
                 <div class="card">
-                    <h3 class="text-xl font-semibold text-teal-600 mb-2">Nossos Objetivos</h3>
-                    <ul class="list-disc list-inside text-slate-600 space-y-1">
-                        <li>Proporcionar experiência prática e aprimorar habilidades dos membros.</li>
-                        <li>Oferecer serviços de desenvolvimento web de qualidade para PMEs.</li>
-                        <li>Conectar o IFBA com as demandas do setor de tecnologia.</li>
-                        <li>Estimular a mentalidade empreendedora entre os alunos.</li>
-                        <li>Buscar a autossuficiência financeira da EJ (Opcional).</li>
+                    <h3 class="text-xl font-semibold text-teal-600 mb-4">Nossos Objetivos</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="objective-item">
+                            <svg class="objective-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                            <span>Proporcionar experiência prática e aprimorar habilidades dos membros.</span>
+                        </li>
+                        <li class="objective-item">
+                            <svg class="objective-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                            <span>Oferecer serviços de desenvolvimento web de qualidade para PMEs.</span>
+                        </li>
+                        <li class="objective-item">
+                            <svg class="objective-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
+                            <span>Conectar o IFBA com as demandas do setor de tecnologia.</span>
+                        </li>
+                        <li class="objective-item">
+                             <svg class="objective-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l.346.666L12.954 4.88l2.27.33-1.642 1.598.388 2.26-2.03-.107-2.03.107.388-2.26-1.642-1.598 2.27-.33.608-1.524zM21.12 15.27A10 10 0 1 1 2.88 8.73"></path><path d="M12 17.91V6.09"></path></svg>
+                            <span>Estimular a mentalidade empreendedora entre os alunos.</span>
+                        </li>
+                        <li class="objective-item">
+                            <svg class="objective-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            <span>Buscar a autossuficiência financeira da EJ (Opcional).</span>
+                        </li>
                     </ul>
                 </div>
-                <div class="card lg:col-span-2">
+
+                <div class="card">
                     <h3 class="text-xl font-semibold text-teal-700 mb-2 text-center">Estrutura Organizacional Inicial</h3>
                     <p class="text-slate-600 mb-8 text-center text-sm">Uma visão da nossa organização ágil, pronta para crescer.</p>
                     <div class="org-chart-container flex flex-col items-center space-y-8 py-6">
@@ -211,21 +223,22 @@
                         </div>
                     </div>
                 </div>
-                </div>
 
-            <div class="card">
-                <h3 class="text-xl font-semibold text-teal-600 mb-2">Compromisso com as Diretrizes Institucionais</h3>
-                <img src="https://placehold.co/100x50/1F2937/FFFFFF?text=IFBA&font=Inter" alt="Logo IFBA Placeholder" class="mx-auto my-4 h-12">
-                <p class="text-slate-600 text-center mb-4">
-                    Nosso estatuto está em fase de desenvolvimento e será elaborado em total conformidade com o <strong>Regulamento das Empresas Juniores do IFBA (Resolução Nº 24/2017 - CONSUP/IFBA ou a versão mais recente)</strong>. Estamos cientes das normas e procedimentos para formalização.
-                </p>
-                <p class="text-center">
-                    <a href="https://docs.google.com/document/d/1iapNe--HrY434-Mrkzy7k1ECNxKNgqP9MU65U6g0RwY/edit?tab=t.0" target="_blank" class="text-teal-600 hover:text-teal-800 font-semibold underline">
-                        Acesse o Estatuto da Codify (em desenvolvimento)
-                    </a>
-                </p>
-            </div>
-        </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-4 text-center">Compromisso com as Diretrizes Institucionais</h3>
+                    <div class="flex justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-teal-600"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                    </div>
+                    <p class="text-slate-600 text-center mb-4">
+                        Nosso estatuto está em fase de desenvolvimento e será elaborado em total conformidade com o <strong>Regulamento das Empresas Juniores do IFBA (Resolução Nº 24/2017 - CONSUP/IFBA ou a versão mais recente)</strong>. Estamos cientes das normas e procedimentos para formalização.
+                    </p>
+                    <p class="text-center">
+                        <a href="https://docs.google.com/document/d/1iapNe--HrY434-Mrkzy7k1ECNxKNgqP9MU65U6g0RwY/edit?tab=t.0" target="_blank" class="text-teal-600 hover:text-teal-800 font-semibold underline">
+                            Acesse o Estatuto da Codify (em desenvolvimento)
+                        </a>
+                    </p>
+                </div>
+            </div> </div>
     </section>
 
     <section id="servicos" class="py-16 md:py-20 bg-slate-100">
