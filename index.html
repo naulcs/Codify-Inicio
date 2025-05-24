@@ -16,12 +16,12 @@
     <!-- Visualization & Content Choices:
         - Report Info: Logo da Codify -> Goal: Apresentar identidade visual -> Method: Tag <img> na seção 'Início' com src para o logo. -> Interaction: Visualização. -> Justification: Reforçar a marca. -> Library: HTML.
         - Report Info: Missão/Visão (Slide 4) -> Goal: Informar identidade central -> Method: Blocos de texto destacados na seção 'Início' -> Interaction: Leitura direta -> Justification: Enfatizar os pilares da EJ -> Library: Tailwind.
-        - Report Info: Objetivos (Slide 5), Estrutura (Slide 9), Normas (Slide 10), Estatuto -> Goal: Detalhar organização e conformidade -> Method: Seção 'Sobre Nós' com subseções claras. Estrutura como diagrama HTML/Tailwind. Link para o estatuto. -> Interaction: Navegação para a seção, clique no link. -> Justification: Agrupar informações institucionais. -> Library: Tailwind.
+        - Report Info: Objetivos (Slide 5), Estrutura (Slide 9), Normas (Slide 10), Estatuto -> Goal: Detalhar organização e conformidade -> Method: Seção 'Sobre Nós' com subseções claras. Estrutura como diagrama HTML/Tailwind aprimorado. Link para o estatuto. -> Interaction: Navegação para a seção, clique no link. -> Justification: Agrupar informações institucionais. -> Library: Tailwind.
         - Report Info: Serviços (Slide 6), Público-Alvo (Slide 7) -> Goal: Clarificar ofertas -> Method: Seção 'Serviços' com cards. -> Interaction: Leitura. -> Justification: Apresentar capacidades. -> Library: Tailwind.
         - Report Info: Diferenciais (Slide 8) + ✨ Gemini API -> Goal: Persuadir sobre o valor da Codify com reforço da IA -> Method: Seção 'Diferenciais' com lista e botão para gerar argumentos de venda. Área para exibir resultado da IA. -> Interaction: Clique em botão, leitura de resultado dinâmico. -> Justification: Realçar pontos fortes com validação criativa da IA. -> Library: Tailwind, JS, Gemini API.
         - Report Info: Próximos Passos/Pedido (Slide 11) -> Goal: Engajar e solicitar apoio -> Method: Seção 'Apoie' com texto claro. -> Interaction: Leitura. -> Justification: Concluir com necessidades. -> Library: Tailwind.
         - Report Info: Link para CheckList.html -> Goal: Fornecer acesso a um recurso externo -> Method: Novo item de menu "CheckList" -> Interaction: Clique para navegar para CheckList.html. -> Justification: Adicionar recurso complementar. -> Library: HTML.
-        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+        - CONFIRMATION: NO SVG graphics used initially, but added for org chart. NO Mermaid JS used.
     -->
     <style>
         body {
@@ -50,13 +50,14 @@
         html {
             scroll-behavior: smooth;
         }
-        .org-chart-node {
+        /* Estilos Antigos da Estrutura Organizacional (serão substituídos/complementados) */
+        .org-chart-node-old { /* Renomeado para evitar conflito se necessário, mas idealmente removido */
             @apply bg-teal-100 text-teal-800 p-3 rounded-md shadow text-center font-semibold;
         }
-        .org-chart-level {
+        .org-chart-level-old { /* Renomeado para evitar conflito se necessário, mas idealmente removido */
             @apply flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-4 sm:space-y-0 mt-4;
         }
-        .org-chart-level .org-chart-node {
+        .org-chart-level-old .org-chart-node-old { /* Renomeado */
             @apply w-full sm:w-1/3;
         }
 
@@ -68,6 +69,18 @@
         }
         .error-message {
             @apply text-red-600 bg-red-100 border border-red-300 p-3 rounded-md text-sm;
+        }
+
+        /* Novos estilos para a Estrutura Organizacional */
+        .org-node {
+            @apply p-4 rounded-xl shadow-lg text-center font-semibold transition-all duration-300 ease-in-out cursor-default w-full max-w-xs sm:w-auto;
+            /* min-width: 180px; /* Garante uma largura mínima para os nós */
+        }
+        .president-node {
+            @apply bg-teal-600 text-white hover:bg-teal-700 transform hover:scale-105 border-2 border-teal-700;
+        }
+        .director-node {
+            @apply bg-white text-teal-700 border-2 border-teal-200 hover:border-teal-500 hover:shadow-xl transform hover:scale-105;
         }
     </style>
 </head>
@@ -162,18 +175,43 @@
                     </ul>
                 </div>
                 <div class="card lg:col-span-2">
-                    <h3 class="text-xl font-semibold text-teal-600 mb-4">Estrutura Organizacional Inicial</h3>
-                    <p class="text-slate-600 mb-4">Planejamos uma estrutura inicial para garantir a organização e o fluxo eficiente, com membros podendo atuar em diversas áreas no começo:</p>
-                    <div class="space-y-4">
-                        <div class="org-chart-node">Presidência</div>
-                        <div class="org-chart-level">
-                            <div class="org-chart-node">Diretoria de Projetos</div>
-                            <div class="org-chart-node">Diretoria de Negócios (Comercial/Marketing)</div>
-                            <div class="org-chart-node">Diretoria Administrativo-Financeira</div>
+                    <h3 class="text-xl font-semibold text-teal-700 mb-2 text-center">Estrutura Organizacional Inicial</h3>
+                    <p class="text-slate-600 mb-8 text-center text-sm">Uma visão da nossa organização ágil, pronta para crescer.</p>
+                    <div class="org-chart-container flex flex-col items-center space-y-8 py-6">
+                        <div class="relative">
+                            <div class="org-node president-node group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 h-5 w-5 text-white group-hover:text-teal-200 transition-colors"><path d="M20 12L12 4l-8 8 8 8 8-8zM12 12V22"></path><path d="M12 12L4 20M12 12l8 8M12 4v8"></path></svg> Presidência
+                            </div>
+                            <div class="absolute top-full left-1/2 w-0.5 h-8 bg-teal-300 transform -translate-x-1/2"></div>
+                        </div>
+                
+                        <div class="w-full flex flex-col sm:flex-row justify-around items-start space-y-12 sm:space-y-0 sm:space-x-4 pt-8 relative">
+                            <div class="absolute top-0 left-[10%] right-[10%] h-0.5 bg-teal-300"></div>
+                
+                            <div class="relative flex flex-col items-center w-full sm:w-1/3">
+                                <div class="absolute bottom-full left-1/2 w-0.5 h-8 bg-teal-300 transform -translate-x-1/2"></div>
+                                <div class="org-node director-node group">
+                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 h-5 w-5 text-teal-700 group-hover:text-teal-500 transition-colors"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> Diretoria de Projetos
+                                </div>
+                            </div>
+                
+                            <div class="relative flex flex-col items-center w-full sm:w-1/3">
+                                <div class="absolute bottom-full left-1/2 w-0.5 h-8 bg-teal-300 transform -translate-x-1/2"></div>
+                                <div class="org-node director-node group">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 h-5 w-5 text-teal-700 group-hover:text-teal-500 transition-colors"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 10l-4 2M12 10l4 2M12 10V3"></path><path d="m18 8-6 4-6-4"></path></svg> Diretoria de Negócios <span class="block text-xs font-normal text-slate-500 group-hover:text-teal-600">(Comercial/Marketing)</span>
+                                </div>
+                            </div>
+                
+                            <div class="relative flex flex-col items-center w-full sm:w-1/3">
+                                <div class="absolute bottom-full left-1/2 w-0.5 h-8 bg-teal-300 transform -translate-x-1/2"></div>
+                                <div class="org-node director-node group">
+                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 h-5 w-5 text-teal-700 group-hover:text-teal-500 transition-colors"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Diretoria Adm-Financeira
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                </div>
 
             <div class="card">
                 <h3 class="text-xl font-semibold text-teal-600 mb-2">Compromisso com as Diretrizes Institucionais</h3>
