@@ -8,16 +8,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Application Structure Plan: 
-        A SPA com navegação no cabeçalho para seções temáticas: Início (visão geral, missão, visão, logo), Sobre Nós (objetivos, estrutura, normas), Serviços (ofertas, público-alvo, ✨ Gerador de Ideias IA), Diferenciais (por que escolher a Codify, ✨ Argumentos de Venda IA), Apoie (próximos passos, pedido de apoio) e CheckList (link externo). 
+    <!-- Application Structure Plan:
+        A SPA com navegação no cabeçalho para seções temáticas: Início (visão geral, missão, visão, logo), Sobre Nós (objetivos, estrutura, normas, estatuto), Serviços (ofertas, público-alvo), Diferenciais (por que escolher a Codify, ✨ Argumentos de Venda IA), Apoie (próximos passos, pedido de apoio) e CheckList (link externo).
         Esta estrutura organiza o conteúdo de forma lógica, facilitando a exploração progressiva e a compreensão da proposta da Codify.
         As interações incluem navegação suave, botões para acionar a Gemini API para geração de conteúdo dinâmico.
     -->
     <!-- Visualization & Content Choices:
         - Report Info: Logo da Codify -> Goal: Apresentar identidade visual -> Method: Tag <img> na seção 'Início' com src para o logo. -> Interaction: Visualização. -> Justification: Reforçar a marca. -> Library: HTML.
         - Report Info: Missão/Visão (Slide 4) -> Goal: Informar identidade central -> Method: Blocos de texto destacados na seção 'Início' -> Interaction: Leitura direta -> Justification: Enfatizar os pilares da EJ -> Library: Tailwind.
-        - Report Info: Objetivos (Slide 5), Estrutura (Slide 9), Normas (Slide 10) -> Goal: Detalhar organização e conformidade -> Method: Seção 'Sobre Nós' com subseções claras. Estrutura como diagrama HTML/Tailwind. -> Interaction: Navegação para a seção. -> Justification: Agrupar informações institucionais. -> Library: Tailwind.
-        - Report Info: Serviços (Slide 6), Público-Alvo (Slide 7) + ✨ Gemini API -> Goal: Clarificar ofertas e inspirar com ideias de projetos -> Method: Seção 'Serviços' com cards, input para setor e botão para gerar ideias de projetos. Área para exibir resultados da IA. -> Interaction: Input de texto, clique em botão, leitura de resultados dinâmicos. -> Justification: Apresentar capacidades e demonstrar inovação com IA. -> Library: Tailwind, JS, Gemini API.
+        - Report Info: Objetivos (Slide 5), Estrutura (Slide 9), Normas (Slide 10), Estatuto -> Goal: Detalhar organização e conformidade -> Method: Seção 'Sobre Nós' com subseções claras. Estrutura como diagrama HTML/Tailwind. Link para o estatuto. -> Interaction: Navegação para a seção, clique no link. -> Justification: Agrupar informações institucionais. -> Library: Tailwind.
+        - Report Info: Serviços (Slide 6), Público-Alvo (Slide 7) -> Goal: Clarificar ofertas -> Method: Seção 'Serviços' com cards. -> Interaction: Leitura. -> Justification: Apresentar capacidades. -> Library: Tailwind.
         - Report Info: Diferenciais (Slide 8) + ✨ Gemini API -> Goal: Persuadir sobre o valor da Codify com reforço da IA -> Method: Seção 'Diferenciais' com lista e botão para gerar argumentos de venda. Área para exibir resultado da IA. -> Interaction: Clique em botão, leitura de resultado dinâmico. -> Justification: Realçar pontos fortes com validação criativa da IA. -> Library: Tailwind, JS, Gemini API.
         - Report Info: Próximos Passos/Pedido (Slide 11) -> Goal: Engajar e solicitar apoio -> Method: Seção 'Apoie' com texto claro. -> Interaction: Leitura. -> Justification: Concluir com necessidades. -> Library: Tailwind.
         - Report Info: Link para CheckList.html -> Goal: Fornecer acesso a um recurso externo -> Method: Novo item de menu "CheckList" -> Interaction: Clique para navegar para CheckList.html. -> Justification: Adicionar recurso complementar. -> Library: HTML.
@@ -112,10 +112,10 @@
 
     <section id="inicio" class="py-16 md:py-24 bg-gradient-to-br from-teal-50 via-sky-50 to-fuchsia-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <img src="https://imgur.com/6zC9ALZ.png" 
-                 alt="Logo da Codify" 
+            <img src="https://imgur.com/6zC9ALZ.png"
+                 alt="Logo da Codify"
                  class="mx-auto mb-8 shadow-xl max-w-[200px] h-auto sm:max-w-[280px] rounded-md">
-            
+
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-teal-700 mb-6">
                 Codify: A Empresa Júnior de ADS
             </h1>
@@ -125,7 +125,7 @@
             <p class="text-lg text-slate-600 mb-12 max-w-2xl mx-auto">
                 Motivados a aplicar o conhecimento teórico na prática, criar uma ponte entre a academia e o mercado, e desenvolver habilidades empreendedoras e técnicas.
             </p>
-            
+
             <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
                 <div class="card">
                     <h3 class="text-2xl font-semibold text-teal-600 mb-3">Nossa Missão</h3>
@@ -178,8 +178,13 @@
             <div class="card">
                 <h3 class="text-xl font-semibold text-teal-600 mb-2">Compromisso com as Diretrizes Institucionais</h3>
                 <img src="https://placehold.co/100x50/1F2937/FFFFFF?text=IFBA&font=Inter" alt="Logo IFBA Placeholder" class="mx-auto my-4 h-12">
-                <p class="text-slate-600 text-center">
+                <p class="text-slate-600 text-center mb-4">
                     Nosso estatuto está em fase de desenvolvimento e será elaborado em total conformidade com o <strong>Regulamento das Empresas Juniores do IFBA (Resolução Nº 24/2017 - CONSUP/IFBA ou a versão mais recente)</strong>. Estamos cientes das normas e procedimentos para formalização.
+                </p>
+                <p class="text-center">
+                    <a href="https://docs.google.com/document/d/1iapNe--HrY434-Mrkzy7k1ECNxKNgqP9MU65U6g0RwY/edit?tab=t.0" target="_blank" class="text-teal-600 hover:text-teal-800 font-semibold underline">
+                        Acesse o Estatuto da Codify (em desenvolvimento)
+                    </a>
                 </p>
             </div>
         </div>
@@ -189,7 +194,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="section-title">Nossos Serviços</h2>
             <p class="text-center text-slate-600 mb-12 max-w-3xl mx-auto">
-                Com foco em desenvolvimento web, a Codify está preparada para atender diversas necessidades de pequenas e médias empresas que buscam modernizar e otimizar sua presença online e processos. Explore nossas ofertas e inspire-se com ideias de projetos geradas por IA!
+                Com foco em desenvolvimento web, a Codify está preparada para atender diversas necessidades de pequenas e médias empresas que buscam modernizar e otimizar sua presença online e processos. Explore nossas ofertas!
             </p>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="card">
@@ -217,22 +222,6 @@
                     <p class="text-teal-800">Pequenas e médias empresas (PMEs) de Salvador e região que buscam melhorar sua presença online, alcançar novos clientes e otimizar processos com soluções web acessíveis.</p>
                 </div>
             </div>
-
-            <div class="mt-12 p-6 rounded-lg shadow-lg bg-white">
-                <h3 class="text-2xl font-semibold text-fuchsia-700 mb-4 text-center">✨ Inspire-se com Ideias de Projetos Web para PMEs!</h3>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
-                    <input type="text" id="pmeSectorInput" placeholder="Digite um setor de PME (opcional)" class="w-full sm:w-1/2 p-2 border border-slate-300 rounded-md focus:ring-fuchsia-500 focus:border-fuchsia-500">
-                    <button id="generateProjectIdeasBtn" class="btn-ai w-full sm:w-auto">
-                        Sugerir Projetos Web ✨
-                    </button>
-                </div>
-                <div id="projectIdeasLoader" class="hidden text-center my-3">
-                    <div class="loader"></div> Buscando ideias incríveis...
-                </div>
-                <div id="projectIdeasResult" class="ai-result-container hidden"></div>
-                <div id="projectIdeasError" class="error-message hidden mt-3"></div>
-            </div>
-
         </div>
     </section>
 
@@ -319,10 +308,9 @@
                     </ul>
                 </div>
             </div>
-             <a href="mailto:contato.codify.ifba@exemplo.com?subject=Apoio à Empresa Júnior Codify" class="btn-primary inline-block text-lg">
-                Entre em Contato para Apoiar!
-            </a>
-            <p class="mt-4 text-sm text-teal-200">(Email de exemplo. Substitua pelo contato real)</p>
+             <p class="text-lg text-teal-100 mb-8 max-w-3xl mx-auto">
+                Para mais informações sobre como apoiar ou se envolver, entre em contato com os idealizadores do projeto ou com a coordenação do curso de ADS.
+            </p>
         </div>
     </section>
 
@@ -361,7 +349,7 @@
         function changeNavHighlight() {
             let index = sections.length;
             while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
-            
+
             navLinks.forEach((link) => {
                 if (link.getAttribute('data-section')) { // Só remove 'active' de links de seção
                     link.classList.remove('active');
@@ -369,7 +357,7 @@
             });
 
             if (sections[index]) { // Verifica se a seção existe
-                 const activeLink = document.querySelector(`nav a[data-section="${sections[index].id}"]`);
+                const activeLink = document.querySelector(`nav a[data-section="${sections[index].id}"]`);
                 if (activeLink) {
                     activeLink.classList.add('active');
                 }
@@ -381,12 +369,6 @@
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         // Funções da API Gemini
-        const generateProjectIdeasBtn = document.getElementById('generateProjectIdeasBtn');
-        const pmeSectorInput = document.getElementById('pmeSectorInput');
-        const projectIdeasResult = document.getElementById('projectIdeasResult');
-        const projectIdeasLoader = document.getElementById('projectIdeasLoader');
-        const projectIdeasError = document.getElementById('projectIdeasError');
-
         const generateSalesPitchBtn = document.getElementById('generateSalesPitchBtn');
         const salesPitchResult = document.getElementById('salesPitchResult');
         const salesPitchLoader = document.getElementById('salesPitchLoader');
@@ -402,9 +384,9 @@
             try {
                 let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
                 const payload = { contents: chatHistory };
-                const apiKey = ""; 
+                const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                
+
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -437,19 +419,6 @@
             }
         }
 
-        if (generateProjectIdeasBtn) {
-            generateProjectIdeasBtn.addEventListener('click', () => {
-                const sector = pmeSectorInput.value.trim();
-                let prompt;
-                if (sector) {
-                    prompt = `Sugira 3 a 5 ideias concisas e criativas de projetos de desenvolvimento web especificamente para pequenas e médias empresas do setor de "${sector}". Para cada ideia, forneça um nome e uma breve descrição (1-2 frases). Foque em soluções que tragam resultados rápidos e visíveis. Formate como uma lista.`;
-                } else {
-                    prompt = `Sugira 3 a 5 ideias concisas e criativas de projetos de desenvolvimento web para pequenas e médias empresas em geral. Para cada ideia, forneça um nome e uma breve descrição (1-2 frases). Foque em soluções que tragam resultados rápidos e visíveis. Formate como uma lista.`;
-                }
-                callGeminiAPI(prompt, projectIdeasResult, projectIdeasLoader, projectIdeasError);
-            });
-        }
-
         if (generateSalesPitchBtn) {
             generateSalesPitchBtn.addEventListener('click', () => {
                 const diferenciais = [
@@ -463,7 +432,6 @@
                 callGeminiAPI(prompt, salesPitchResult, salesPitchLoader, salesPitchError);
             });
         }
-
     </script>
 </body>
 </html>
